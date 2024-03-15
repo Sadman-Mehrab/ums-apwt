@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { FacultyModule } from './faculty/faculty.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from './faculty/auth/auth.module';
 
 @Module({
   imports: [FacultyModule, TypeOrmModule.forRoot({
@@ -14,7 +15,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     database:'APWT',
     autoLoadEntities: true,
     synchronize: true,
-  })],
+  }), AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })

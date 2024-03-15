@@ -1,19 +1,27 @@
 import { Injectable } from '@nestjs/common';
-import { CreateFacultyDto } from './dto/faculty.dto';
-
+import { CreateFacultyDto, LoginFacultyDTO } from './dto/faculty.dto';
+import { FacultyEntity } from './entities/faculty.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class FacultyService {
-  create(createFacultyDto: CreateFacultyDto) {
-    return 'This action adds a new faculty';
+  constructor(
+    @InjectRepository(FacultyEntity)
+    private facultyRepository: Repository<FacultyEntity>,
+  ) {}
+
+  async register(facultyObject: CreateFacultyDto): Promise<Object> {
+    const { password, ...response } = await this.facultyRepository.save(facultyObject);
+    return response;
   }
 
   findAll() {
     return `This action returns all faculty`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} faculty`;
+  async findOne(loginData: LoginFacultyDTO): Promise<any> {
+    return await this.facultyRepository.findOneBy({ email: loginData.email });
   }
 
   update(id: number, updateFacultyDto: any) {
