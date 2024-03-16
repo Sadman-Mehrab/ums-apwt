@@ -44,8 +44,10 @@ export class AuthController {
   ): Promise<Object> {
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(facultyObject.password, salt);
+
     facultyObject.password = hashedPassword;
     facultyObject.profilePhoto = uploadedFile.filename;
+
     return this.authService.register(facultyObject);
   }
 

@@ -1,6 +1,23 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UsePipes,
+  ValidationPipe,
+  UseGuards,
+  ParseIntPipe,
+  Query,
+} from '@nestjs/common';
 import { FacultyService } from './faculty.service';
-import { CreateFacultyDto } from './dto/faculty.dto';
+import {
+  CreateFacultyDto,
+  FacultyUserDTO,
+  GetFacultyDTO,
+} from './dto/faculty.dto';
 import { FacultyEntity } from './entities/faculty.entity';
 import { AuthGuard } from './auth/auth.guard';
 
@@ -8,20 +25,28 @@ import { AuthGuard } from './auth/auth.guard';
 export class FacultyController {
   constructor(private readonly facultyService: FacultyService) {}
 
-  @UseGuards(AuthGuard)
   @Get()
-  findAll() : Promise<Object[]>{
-    return this.facultyService.findAll();
+  findAll(@Query('designation') designation): Promise<GetFacultyDTO[]> {
+    if(!designation) return this.facultyService.findAll();
+    else return this.facultyService.findAllByDesignation(designation);
   }
 
 
+  @UseGuards(AuthGuard)
+  @UsePipes()
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFacultyDto: any) {
-    return this.facultyService.update(+id, updateFacultyDto);
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateFacultyDto: any,
+  ): Promise<Object> {
+    return this.facultyService.update(id, updateFacultyDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.facultyService.remove(+id);
+  remove(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() user: FacultyUserDTO,
+  ): Promise<Object> {
+    return this.facultyService.remove(id, user);
   }
 }

@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { FacultyService } from '../faculty.service';
-import { CreateFacultyDto, LoginFacultyDTO } from 'src/faculty/dto/faculty.dto';
+import { CreateFacultyDto, GetFacultyDTO, LoginFacultyDTO } from 'src/faculty/dto/faculty.dto';
 import * as bcrypt from 'bcrypt';
 import { FacultyEntity } from '../entities/faculty.entity';
 
@@ -12,12 +12,12 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async register(facultyObject: CreateFacultyDto): Promise<Object> { 
+  async register(facultyObject: CreateFacultyDto): Promise<GetFacultyDTO> { 
      return await this.facultyService.register(facultyObject);
   }
 
   async login(loginData: LoginFacultyDTO): Promise<{ access_token: string }> {
-    const faculty = await this.facultyService.findOne(loginData);
+    const faculty = await this.facultyService.login(loginData);
     if (!faculty) {
       throw new UnauthorizedException();
     }
