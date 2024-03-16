@@ -27,10 +27,14 @@ export class FacultyController {
 
   @Get()
   findAll(@Query('designation') designation): Promise<GetFacultyDTO[]> {
-    if(!designation) return this.facultyService.findAll();
+    if (!designation) return this.facultyService.findAll();
     else return this.facultyService.findAllByDesignation(designation);
   }
 
+  @Get(':id/sections')
+  async getSections(@Param('id', ParseIntPipe) id: number): Promise<Object[]> {
+    return await this.facultyService.getSections(id);
+  }
 
   @UseGuards(AuthGuard)
   @UsePipes()

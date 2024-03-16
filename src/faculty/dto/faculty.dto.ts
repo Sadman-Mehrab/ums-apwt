@@ -6,6 +6,9 @@ import {
   Length,
   IsEmail,
   IsDateString,
+  IsInt,
+  Min,
+  Max,
 
 } from 'class-validator';
 
@@ -53,6 +56,11 @@ export class CreateFacultyDto {
 
   @Optional()
   profilePhoto: string;
+
+  @IsNotEmpty({ message: 'salary is required' })
+  @Min(1000, {message: 'salary must be greater than or equal to 10,000'})
+  @IsInt({ message: 'salary must be a number' })
+  salary: number;
 
 
 }

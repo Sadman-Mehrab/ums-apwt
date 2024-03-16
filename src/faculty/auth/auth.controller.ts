@@ -19,24 +19,24 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('register')
-  @UseInterceptors(
-    FileInterceptor('profilePhoto', {
-      fileFilter: (req, file, cb) => {
-        if (file.originalname.match(/^.*\.(jpg|webp|png|jpeg)$/))
-          cb(null, true);
-        else {
-          cb(new MulterError('LIMIT_UNEXPECTED_FILE', 'image'), false);
-        }
-      },
-      limits: { fileSize: 1000000 },
-      storage: diskStorage({
-        destination: './upload',
-        filename: function (req, file, cb) {
-          cb(null, Date.now() + file.originalname);
-        },
-      }),
-    }),
-  )
+  // @UseInterceptors(
+  //   FileInterceptor('profilePhoto', {
+  //     fileFilter: (req, file, cb) => {
+  //       if (file.originalname.match(/^.*\.(jpg|webp|png|jpeg)$/))
+  //         cb(null, true);
+  //       else {
+  //         cb(new MulterError('LIMIT_UNEXPECTED_FILE', 'image'), false);
+  //       }
+  //     },
+  //     limits: { fileSize: 1000000 },
+  //     storage: diskStorage({
+  //       destination: './upload',
+  //       filename: function (req, file, cb) {
+  //         cb(null, Date.now() + file.originalname);
+  //       },
+  //     }),
+  //   }),
+  // )
   @UsePipes(new ValidationPipe())
   async registerFaculty(
     @Body() facultyObject: CreateFacultyDto,
@@ -46,7 +46,7 @@ export class AuthController {
     const hashedPassword = await bcrypt.hash(facultyObject.password, salt);
 
     facultyObject.password = hashedPassword;
-    facultyObject.profilePhoto = uploadedFile.filename;
+    // facultyObject.profilePhoto = uploadedFile.filename;
 
     return this.authService.register(facultyObject);
   }
