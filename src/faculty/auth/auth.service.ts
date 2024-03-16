@@ -25,9 +25,9 @@ export class AuthService {
     if (!passwordMatched) {
       throw new UnauthorizedException();
     }
-    const payLoad = loginData;
+    const payload = loginData;
     return {
-      access_token: await this.jwtService.signAsync(payLoad),
+      access_token: await this.jwtService.signAsync(payload),
     };
   }
 }
