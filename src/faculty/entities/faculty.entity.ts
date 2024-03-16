@@ -29,4 +29,5 @@ export class FacultyEntity {
 
     @Column({name: 'profilePhoto', type: 'varchar', length: 500})
     profilePhoto: string;
+
 }
