@@ -7,14 +7,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from './auth/auth.service';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([FacultyEntity]),
-    JwtModule.register({
-      global: true,
-      secret: 'UMS-APWT',
-      signOptions: { expiresIn: '30m' },
-    }),
-  ],
+  imports: [TypeOrmModule.forFeature([FacultyEntity])],
   controllers: [FacultyController],
   providers: [FacultyService, AuthService],
   exports: [FacultyService],

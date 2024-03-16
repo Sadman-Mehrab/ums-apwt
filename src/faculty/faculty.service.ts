@@ -16,8 +16,9 @@ export class FacultyService {
     return response;
   }
 
-  findAll() {
-    return `This action returns all faculty`;
+  async findAll(): Promise<Object[]>{
+    const faculties = await this.facultyRepository.find({});
+    return faculties.map(({ password, ...response }) => response )
   }
 
   async findOne(loginData: LoginFacultyDTO): Promise<any> {
