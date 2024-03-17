@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateArticleDTO, UpdateArticleDTO } from './dto/article.dto';
 import { ArticleEntity } from './entities/article.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -10,6 +10,12 @@ export class ArticleService {
     @InjectRepository(ArticleEntity)
     private articleRepository: Repository<ArticleEntity>,
   ) {}
+
+  async findIfExists(id: number): Promise<ArticleEntity> {
+    const article = await this.articleRepository.findOneBy({ id: id });
+    if (!article) throw new NotFoundException();
+    else return article;
+  }
 
   async create(createArticleDto: CreateArticleDTO): Promise<ArticleEntity> {
     return await this.articleRepository.save(createArticleDto);
@@ -31,16 +37,18 @@ export class ArticleService {
     });
   }
 
-
   async findOne(id: number) {
+    const article = await this.findIfExists(id);
     return await this.articleRepository.findOneBy({ id: id });
   }
 
   async update(id: number, updateArticleDto: UpdateArticleDTO) {
+    const article = await this.findIfExists(id);
     return await this.articleRepository.save({ id, updateArticleDto });
   }
 
   async remove(id: number) {
+    const article = await this.findIfExists(id);
     return await this.articleRepository.delete(id);
   }
 }
