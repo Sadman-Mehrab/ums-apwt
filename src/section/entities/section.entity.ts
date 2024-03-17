@@ -1,6 +1,7 @@
 import { CourseEntity } from 'src/course/entities/course.entity';
 import { FacultyEntity } from 'src/faculty/entities/faculty.entity';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { StudentEntity } from 'src/student/entities/student.entity';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, ManyToMany } from 'typeorm';
 
 @Entity('section')
 export class SectionEntity {
@@ -15,4 +16,8 @@ export class SectionEntity {
 
   @ManyToOne(() => FacultyEntity, (faculty) => faculty.sections)
   faculty: FacultyEntity;
+
+  @ManyToMany(() => StudentEntity, (student) => student.sections)
+  students: StudentEntity[];
+  
 }
