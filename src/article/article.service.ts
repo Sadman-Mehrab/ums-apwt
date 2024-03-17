@@ -1,25 +1,46 @@
 import { Injectable } from '@nestjs/common';
-import { CreateArticleDto } from './dto/article.dto';
+import { CreateArticleDTO, UpdateArticleDTO } from './dto/article.dto';
+import { ArticleEntity } from './entities/article.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class ArticleService {
-  create(createArticleDto: CreateArticleDto) {
-    return 'This action adds a new article';
+  constructor(
+    @InjectRepository(ArticleEntity)
+    private articleRepository: Repository<ArticleEntity>,
+  ) {}
+
+  async create(createArticleDto: CreateArticleDTO): Promise<ArticleEntity> {
+    return await this.articleRepository.save(createArticleDto);
   }
 
-  findAll() {
-    return `This action returns all article`;
+  async findAll(): Promise<ArticleEntity[]> {
+    return await this.articleRepository.find({});
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} article`;
+  async findByDateASC(): Promise<ArticleEntity[]> {
+    return await this.articleRepository.find({
+      order: { datePublished: 'ASC' },
+    });
   }
 
-  // update(id: number, updateArticleDto: UpdateArticleDto) {
-  //   return `This action updates a #${id} article`;
-  // }
+  async findByDateDSC(): Promise<ArticleEntity[]> {
+    return await this.articleRepository.find({
+      order: { datePublished: 'DESC' },
+    });
+  }
 
-  remove(id: number) {
-    return `This action removes a #${id} article`;
+
+  async findOne(id: number) {
+    return await this.articleRepository.findOneBy({ id: id });
+  }
+
+  async update(id: number, updateArticleDto: UpdateArticleDTO) {
+    return await this.articleRepository.save({ id, updateArticleDto });
+  }
+
+  async remove(id: number) {
+    return await this.articleRepository.delete(id);
   }
 }

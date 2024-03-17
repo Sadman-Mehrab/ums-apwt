@@ -42,7 +42,7 @@ export class GradeService {
     return gradeObject;
   }
 
-  async create(createGradeDto: CreateGradeDto): Promise<Object> {
+  async create(createGradeDto: CreateGradeDto): Promise<GradeEntity> {
     const gradeObject = this.calculateGrade(createGradeDto);
     return await this.gradeRepository.save(gradeObject);
   }

@@ -29,14 +29,14 @@ export class CreateCourseDTO {
 export class UpdateCourseDTO {
   @IsNotEmpty({ message: 'courseName is required' })
   @Length(1, 100, {
-    message: 'courseName length must be between 8 and 100 characters',
+    message: 'courseName length must be between 1 and 100 characters',
   })
   @IsString({ message: 'courseName must be a string' })
   courseName: string;
 
   @IsNotEmpty({ message: 'department is required' })
   @Length(1, 100, {
-    message: 'department length must be between 8 and 100 characters',
+    message: 'department length must be between 1 and 100 characters',
   })
   @IsString({ message: 'department must be a string' })
   department: string;

@@ -22,7 +22,7 @@ export class FacultyService {
     private facultyRepository: Repository<FacultyEntity>,
   ) {}
 
-  async findOneUtil(id: number): Promise<FacultyEntity> {
+  async findIfExists(id: number): Promise<FacultyEntity> {
     const faculty = await this.facultyRepository.findOneBy({ id: id });
     if (!faculty) throw new NotFoundException();
     else return faculty;
@@ -54,7 +54,7 @@ export class FacultyService {
     id: number,
     updateFacultyDto: UpdateFacultyDTO,
   ): Promise<Object> {
-    const faculty = await this.findOneUtil(id);
+    const faculty = await this.findIfExists(id);
     const passwordMatched = await bcrypt.compare(
       updateFacultyDto.userPassword,
       faculty.password,
@@ -71,7 +71,7 @@ export class FacultyService {
   }
 
   async remove(id: number, user: FacultyUserDTO): Promise<Object> {
-    const faculty = await this.findOneUtil(id);
+    const faculty = await this.findIfExists(id);
     const passwordMatched = await bcrypt.compare(
       user.userPassword,
       faculty.password,
@@ -88,5 +88,15 @@ export class FacultyService {
     });
     return faculties.map(({password, ...response}) => response);
   }
+
+  async getFacultyArticles(id: number): Promise<Object[]> {
+    const faculties =  await this.facultyRepository.find({
+      where: { id: id },
+      relations: ['articles'],
+    });
+    return faculties.map(({password, ...response}) => response);
+  }
+
+
 
 }
