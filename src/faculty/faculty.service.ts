@@ -82,21 +82,39 @@ export class FacultyService {
   }
 
   async getFacultySections(id: number): Promise<Object[]> {
-    const faculties =  await this.facultyRepository.find({
+    const faculty = await this.findIfExists(id);
+    const sections = await this.facultyRepository.find({
       where: { id: id },
       relations: ['sections'],
     });
-    return faculties.map(({password, ...response}) => response);
+    return sections.map(({ password, ...response }) => response);
   }
 
   async getFacultyArticles(id: number): Promise<Object[]> {
-    const faculties =  await this.facultyRepository.find({
+    const faculty = await this.findIfExists(id);
+    const articles = await this.facultyRepository.find({
       where: { id: id },
       relations: ['articles'],
     });
-    return faculties.map(({password, ...response}) => response);
+    return articles.map(({ password, ...response }) => response);
   }
 
+  async uploadProfilePhoto(
+    id: number,
+    uploadedProfilePhoto: Express.Multer.File,
+  ) {
+    const faculty = await this.findIfExists(id);
+    faculty.profilePhoto = uploadedProfilePhoto.filename;
+    const { password, profilePhoto, ...response } =
+      await this.facultyRepository.save({
+        id,
+        ...faculty,
+      });
+    return response;
+  }
 
-
+  async getProfilePhoto(id: number, res) {
+    const faculty = await this.findIfExists(id);
+    res.sendFile(faculty.profilePhoto, { root: './upload' });
+  }
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateGradeDto, UpdateGradeDto } from './dto/grade.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { GradeEntity } from './entities/grade.entity';
@@ -10,6 +10,12 @@ export class GradeService {
     @InjectRepository(GradeEntity)
     private gradeRepository: Repository<GradeEntity>,
   ) {}
+
+  async findIfExists(id: number): Promise<GradeEntity> {
+    const grade = await this.gradeRepository.findOneBy({ id: id });
+    if (!grade) throw new NotFoundException();
+    else return grade;
+  }
 
   calculateGrade(gradeObject: CreateGradeDto): CreateGradeDto {
     const totalMarks =
@@ -48,23 +54,28 @@ export class GradeService {
   }
 
   async findAll() {
+
     return await this.gradeRepository.find({});
   }
 
   async findOne(id: number) {
+    const grade = this.findIfExists(id);
     return await this.gradeRepository.findOneBy({ id: id });
   }
 
   async update(id: number, updateGradeDto: UpdateGradeDto): Promise<Object> {
+    const grade = this.findIfExists(id);
     const gradeObject = this.calculateGrade(updateGradeDto);
     return await this.gradeRepository.save({ id, gradeObject });
   }
 
   async remove(id: number): Promise<Object> {
+    const grade = this.findIfExists(id);
     return await this.gradeRepository.delete({ id: id });
   }
 
   async getStudentGrades(id: number): Promise<Object[]> {
+    const grade = this.findIfExists(id);
     return await this.gradeRepository.find({
       relations: ['student'],
       where: { student: { id: id } },
@@ -72,6 +83,7 @@ export class GradeService {
   }
 
   async getCourseGrades(id: number): Promise<Object[]> {
+    const grade = this.findIfExists(id);
     return await this.gradeRepository.find({
       relations: ['course'],
       where: { course: { id: id } },
