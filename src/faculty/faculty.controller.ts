@@ -36,6 +36,11 @@ export class FacultyController {
     return await this.facultyService.getFacultySections(id);
   }
 
+  @Get(':id/articles')
+  async getFacultyArticles(@Param('id', ParseIntPipe) id: number): Promise<Object[]> {
+    return await this.facultyService.getFacultySections(id);
+  }
+
   @UseGuards(AuthGuard)
   @UsePipes()
   @Patch(':id')

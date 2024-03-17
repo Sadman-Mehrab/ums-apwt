@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 import { GradeService } from './grade.service';
 import { CreateGradeDto, UpdateGradeDto } from './dto/grade.dto';
+import { GradeEntity } from './entities/grade.entity';
 
 @Controller('grade')
 export class GradeController {
@@ -19,7 +20,7 @@ export class GradeController {
 
   @Post()
   @UsePipes(new ValidationPipe())
-  create(@Body() createGradeDto: CreateGradeDto) {
+  create(@Body() createGradeDto: CreateGradeDto): Promise<GradeEntity> {
     return this.gradeService.create(createGradeDto);
   }
 

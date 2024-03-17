@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 import { CourseService } from './course.service';
 import { CreateCourseDTO } from './dto/course.dto';
+import { CourseEntity } from './entities/course.entity';
 
 @Controller('course')
 export class CourseController {
@@ -19,7 +20,7 @@ export class CourseController {
 
   @Post()
   @UsePipes(new ValidationPipe())
-  create(@Body() createCourseDto: CreateCourseDTO): Promise<Object> {
+  create(@Body() createCourseDto: CreateCourseDTO): Promise<CourseEntity> {
     return this.courseService.create(createCourseDto);
   }
 

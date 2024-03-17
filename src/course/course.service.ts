@@ -11,7 +11,7 @@ export class CourseService {
     private courseRepository: Repository<CourseEntity>,
   ) {}
 
-  async create(createCourseDto: CreateCourseDTO): Promise<Object> {
+  async create(createCourseDto: CreateCourseDTO): Promise<CourseEntity> {
     return await this.courseRepository.save(createCourseDto);
   }
 
