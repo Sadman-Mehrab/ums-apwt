@@ -1,3 +1,4 @@
+import { ArticleEntity } from 'src/article/entities/article.entity';
 import { SectionEntity } from 'src/section/entities/section.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinTable } from 'typeorm';
 
@@ -40,4 +41,9 @@ export class FacultyEntity {
 
   @OneToMany(() => SectionEntity, (section) => section.faculty)
   sections: SectionEntity[];
+
+  @OneToMany(() => ArticleEntity, (article) => article.faculty)
+  articles: ArticleEntity[];
+
+  
 }

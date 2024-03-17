@@ -81,10 +81,12 @@ export class FacultyService {
     return await this.facultyRepository.delete({ id: id });
   }
 
-  async getSections(id: number): Promise<Object[]> {
-    return await this.facultyRepository.find({
+  async getFacultySections(id: number): Promise<Object[]> {
+    const faculties =  await this.facultyRepository.find({
       where: { id: id },
       relations: ['sections'],
     });
+    return faculties.map(({password, ...response}) => response);
   }
+
 }
