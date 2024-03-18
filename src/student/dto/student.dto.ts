@@ -73,5 +73,37 @@ export class CreateStudentDTO {
 }
 
 export class LoginStudentDTO{
+    @IsNotEmpty({message: 'Email is required'})
+    @IsEmail({}, {message: 'Email must be valid'})
+    email: string;
 
+    @IsNotEmpty({message: 'Password is required'})
+    @IsString({message: 'Password must be a string' })
+    @Matches(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/, {
+        message:
+        'Passwords must be at least 8 characters, should include atleast one uppercase and one lowercase letter and a special character and a digit'
+    })
+    password: string;
+}
+
+export class GetStudentDTO {
+    id: number;
+    fullName: string;
+    email: string;
+    program: string;
+    fatherName: string;
+    gender: Gender;
+    dateOfBirth: Date;
+    address: string;
+    nationality: string;
+    religion: string;
+    bloodGroup: string;
+    phoneNumber: string;
+    admissionDate: Date;
+    profilePicture: string;
+}
+
+export class StudentUserDTO{
+    @IsNotEmpty({ message: 'User Password is required' })
+    userPassword: string;
 }
