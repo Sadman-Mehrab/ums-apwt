@@ -1,10 +1,9 @@
-import { Optional } from "@nestjs/common";
 import { IsDateString, IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, Matches, MaxLength } from "class-validator";
 
 export enum Gender{
-    MALE = 'male',
-    FEMALE = 'female',
-    OTHER = 'other'
+    MALE = 'Male',
+    FEMALE = 'Female',
+    OTHER = 'Other'
 }
 
 export class CreateStudentDTO {
@@ -66,10 +65,6 @@ export class CreateStudentDTO {
     @IsNotEmpty({message: 'Admission Date is required'})
     @IsDateString({}, {message: 'Admission Date must be a valid date'})
     admissionDate: Date;
-
-    @Optional()
-    @Matches(/\.(jpg)$/i, { message: 'Profile picture must have a JPG extension' })
-    profilePicture: string;
 }
 
 export class LoginStudentDTO{
@@ -92,7 +87,7 @@ export class GetStudentDTO {
     email: string;
     program: string;
     fatherName: string;
-    gender: Gender;
+    gender: string;
     dateOfBirth: Date;
     address: string;
     nationality: string;
@@ -106,4 +101,42 @@ export class GetStudentDTO {
 export class StudentUserDTO{
     @IsNotEmpty({ message: 'User Password is required' })
     userPassword: string;
+}
+
+export class UpdateStudentDTO{
+    @IsOptional()
+    id: number;
+
+    @IsOptional()
+    @IsNotEmpty({message: 'Full Name is required'})
+    @IsString({message: 'Full Name must be a string'})
+    fullName: string;
+
+    @IsOptional()
+    @IsNotEmpty({message: 'Email is required'})
+    @IsEmail({}, {message: 'Email must be valid'})
+    email: string;
+
+    @IsOptional()
+    @IsNotEmpty({message: 'Address is required'})
+    @IsString({message: 'Address must be a string'})
+    address: string;
+
+    @IsOptional()
+    @IsNotEmpty({message: 'Blood Group is required'})
+    @IsString({message: 'Blood Group must be a string'})
+    @Matches(/^(A|B|AB|O)[+-]$/, { message: 'Invalid blood group format. Valid formats: A+, B-, AB+, O-' })
+    bloodGroup: string;
+
+    @IsOptional()
+    @IsNotEmpty({message: 'Phone number is required'})
+    @Matches(/^(01)[0-9]{9}$/,{ message: 'Phone number must start with 01 and contain only numbers' })
+    @MaxLength(11, {message: 'Phone number must not be longer than 11 digits'})
+    phoneNumber: string;
+
+    @IsNotEmpty({ message: 'User Password is required' })
+    userPassword: string;
+
+    @IsOptional()
+    password: string;
 }
