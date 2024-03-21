@@ -11,7 +11,7 @@ import { FacultyModule } from '../faculty.module';
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '30m' },
+      signOptions: { expiresIn: '60m' },
     }),
   ],
   providers: [AuthService],

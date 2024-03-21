@@ -54,9 +54,6 @@ export class CreateFacultyDto {
   @IsString({ message: 'designation must be a string' })
   designation: string;
 
-  @Optional()
-  profilePhoto: string;
-
   @IsNotEmpty({ message: 'salary is required' })
   @Min(1000, {message: 'salary must be greater than or equal to 10,000'})
   @IsInt({ message: 'salary must be a number' })
@@ -124,8 +121,6 @@ export class UpdateFacultyDTO {
   @IsString({ message: 'designation must be a string' })
   designation: string;
 
-  @Optional()
-  profilePhoto: string;
 
   @Optional()
   id: number;

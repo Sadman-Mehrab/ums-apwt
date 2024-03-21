@@ -105,7 +105,7 @@ export class FacultyService {
   ) {
     const faculty = await this.findIfExists(id);
     faculty.profilePhoto = uploadedProfilePhoto.filename;
-    const { password, profilePhoto, ...response } =
+    const { password, ...response } =
       await this.facultyRepository.save({
         id,
         ...faculty,
