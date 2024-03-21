@@ -54,7 +54,6 @@ export class GradeService {
   }
 
   async findAll() {
-
     return await this.gradeRepository.find({});
   }
 
@@ -76,10 +75,7 @@ export class GradeService {
 
   async getStudentGrades(id: number): Promise<Object[]> {
     const grade = this.findIfExists(id);
-    return await this.gradeRepository.find({
-      relations: ['student'],
-      where: { student: { id: id } },
-    });
+    return;
   }
 
   async getCourseGrades(id: number): Promise<Object[]> {
@@ -90,10 +86,28 @@ export class GradeService {
     });
   }
 
-  async getStudentGradeForCourse(studentId:number, courseId:number): Promise<Object[]>{
+  async getStudentGradeForCourse(
+    studentId: number,
+    courseId: number,
+  ): Promise<Object[]> {
     return await this.gradeRepository.find({
       relations: ['student', 'course'],
-      where: { student: { id: studentId }, course: { id: courseId } }
+      where: { student: { id: studentId }, course: { id: courseId } },
     });
+  }
+
+  async addAttendance(studentId: number, gradeId: number): Promise<Object> {
+    const grade = this.findIfExists(gradeId);
+    const updatedGrade = await this.gradeRepository.find({
+      relations: ['student'],
+      where: { id: gradeId, student: { id: studentId } },
+    });
+    const attendance = updatedGrade[0].attendance;
+    if (attendance >= 10) {
+      return { message: 'Full Attendace' };
+    } else {
+      updatedGrade[0].attendance += 1;
+      return await this.gradeRepository.save({ gradeId, ...updatedGrade[0] });
+    }
   }
 }

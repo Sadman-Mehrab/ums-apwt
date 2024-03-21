@@ -9,6 +9,8 @@ import { SectionModule } from './section/section.module';
 import { GradeModule } from './grade/grade.module';
 import { StudentModule } from './student/student.module';
 import { ArticleModule } from './article/article.module';
+import { AssignmentModule } from './assignment/assignment.module';
+import { ProfileModule } from './profile/profile.module';
 
 @Module({
   imports: [FacultyModule, TypeOrmModule.forRoot({
@@ -20,7 +22,7 @@ import { ArticleModule } from './article/article.module';
     database:'APWT',
     autoLoadEntities: true,
     synchronize: true,
-  }), AuthModule, CourseModule, SectionModule, GradeModule, StudentModule, ArticleModule],
+  }), AuthModule, CourseModule, SectionModule, GradeModule, StudentModule, ArticleModule, AssignmentModule, ProfileModule],
   controllers: [AppController],
   providers: [AppService],
 })

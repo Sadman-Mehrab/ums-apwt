@@ -44,7 +44,7 @@ export class FacultyController {
 
   @Get(':id/articles')
   async getFacultyArticles(@Param('id', ParseIntPipe) id: number): Promise<Object[]> {
-    return await this.facultyService.getFacultySections(id);
+    return await this.facultyService.getFacultyArticles(id);
   }
 
   @UseGuards(AuthGuard)

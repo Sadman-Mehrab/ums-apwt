@@ -14,12 +14,12 @@ export class StudentController {
 
   @Get()
   findAll() {
-    return this.studentService.findAll();
+    // return this.studentService.findAll();
   }
-
+  
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.studentService.findOne(+id);
+    return this.studentService.findAll(+id);
   }
 
   // @Patch(':id')
@@ -31,4 +31,5 @@ export class StudentController {
   remove(@Param('id') id: string) {
     return this.studentService.remove(+id);
   }
+
 }
