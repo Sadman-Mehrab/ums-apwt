@@ -1,3 +1,4 @@
+import { CreateCourseDTO } from './dto/course.dto';
 import { Injectable } from '@nestjs/common';
 import { CourseEntity } from './entities/course.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -9,4 +10,24 @@ export class CourseService {
     @InjectRepository(CourseEntity)
     private courseRepository: Repository<CourseEntity>,
   ) {}
+
+  async create(createCourseDto: CreateCourseDTO): Promise<CourseEntity> {
+    return await this.courseRepository.save(createCourseDto);
+  }
+
+  async findAll() {
+    return await this.courseRepository.find({ relations: ['sections'] });
+  }
+
+  async findOne(id: number) {
+    return await this.courseRepository.findOneBy({ courseId: id });
+  }
+
+  async update(courseId: number, updateCourseDto: CreateCourseDTO) {
+    return await this.courseRepository.save({courseId, updateCourseDto});
+  }
+
+  async remove(id: number) {
+    return await this.courseRepository.delete({ courseId: id });
+  }
 }

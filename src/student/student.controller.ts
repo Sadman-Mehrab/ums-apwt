@@ -9,13 +9,13 @@ import { MulterError, diskStorage } from "multer";
 export class StudentController {
   constructor(private readonly studentService: StudentService){}
 
-  @UseGuards(StudentAuthGuard)
+  //@UseGuards(StudentAuthGuard)
   @Get('profile/:id')
   async getProfile(@Param('id', ParseIntPipe) id: number){
     return await this.studentService.getProfile(id);
   }
 
-  @UseGuards(StudentAuthGuard)
+  //@UseGuards(StudentAuthGuard)
   @UsePipes(new ValidationPipe())
   @Patch('updateProfile/:id')
   @UseInterceptors(
@@ -40,7 +40,7 @@ export class StudentController {
 
   }
 
-  @UseGuards(StudentAuthGuard)
+  //@UseGuards(StudentAuthGuard)
   @Post('uploadProfilePicture/:id')
   @UseInterceptors(
     FileInterceptor('profilePicture', {
@@ -63,7 +63,7 @@ export class StudentController {
     return this. studentService.uploadProfilePicture(id, profilePicture);
   }
 
-  @UseGuards(StudentAuthGuard)
+  //@UseGuards(StudentAuthGuard)
   @Get('getProfilePicture/:id')
   async getProfilePicture(@Param('id', ParseIntPipe) id: number, @Res() res){
     return this.studentService.getProfilePicture(id, res);
@@ -76,9 +76,9 @@ export class StudentController {
   }
 
   //@UseGuards(StudentAuthGuard)
-  @Get(':id/courses/:courseId')
-  async getCourse(@Param('id', ParseIntPipe)id: number, @Param('courseId', ParseIntPipe) courseId: number){
-    return this.studentService.getCourse(id, courseId);
+  @Get('courses/')
+  async getCourse(){
+    return this.studentService.getCourse();
   }
 
   //@UseGuards(StudentAuthGuard)

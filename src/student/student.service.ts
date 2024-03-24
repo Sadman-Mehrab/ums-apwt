@@ -61,7 +61,7 @@ export class StudentService {
     async uploadProfilePicture(id: number, uploadProfilePicture: Express.Multer.File){
       const student = await this.findIfExists(id);
       student.profilePicture = uploadProfilePicture.filename;
-      const { password, profilePicture, courses, ...response} = await this.studentRepository.save({id, ...student})
+      const { password, courses, ...response} = await this.studentRepository.save({id, ...student})
       return response;
     }
 
@@ -79,13 +79,13 @@ export class StudentService {
       return courses.map(({email, password, program, fatherName, address, admissionDate, gender, dateOfBirth, nationality, religion, bloodGroup,phoneNumber, profilePicture, ...response}) => response);
     }
 
-    async getCourse(id: number, courseId: number){
-      const student = await this.findIfExists(id);
+    async getCourse(){
+      //const student = await this.findIfExists(id);
       const course = await this.courseRepository.find({
-        where: {courseId: courseId},
+        //where: {courseId: courseId},
         relations: ['student']
       });
-      return course.map(({student, assignments, ...response}) => response);
+      return course;
     }
 
     async enrollCourse(id: number, courseId: number){
