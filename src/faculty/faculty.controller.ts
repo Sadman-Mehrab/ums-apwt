@@ -71,7 +71,7 @@ export class FacultyController {
     return this.facultyService.getProfilePhoto(id,res);
   }
 
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   @Post(':id/uploadProfilePhoto')
   @UseInterceptors(
     FileInterceptor('profilePhoto', {
